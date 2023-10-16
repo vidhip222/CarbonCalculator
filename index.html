@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>CarbonCalculator</title>
+	<link rel="icon" type="image/x-icon" href="https://i.imgur.com/UKNP784.png" sizes="32x32">
+	<style>
+		body {
+			background-color: black;
+			margin: 0;
+			padding: 0;
+			overflow-x: hidden;
+			opacity: 0;
+			transition: opacity 1s ease-in-out;
+		}
+
+		header {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 10px;
+			position: relative;
+			z-index: 1;
+		}
+
+		#logo-image {
+			width: 100px;
+			height: auto;
+			margin-right: 20px;
+			margin-left: 0;
+			order: -1;
+			margin-top: -5px;
+			z-index: 9999;
+		}
+
+		#CarbonCalculator {
+			color: white;
+			position: absolute;
+			font-size: 40px;
+			font-family: 'Times New Roman', Times, serif, sans-serif;
+			text-shadow: 1px 1px 2px black;
+			margin-right: 40px;
+			z-index: 9999;
+			margin-left: 90px;
+		}
+
+		#earth-image {
+			position: absolute;
+			right: 0;
+			top: 130px;
+			opacity: 2;
+			width: 80%;
+			max-width: 500px;
+			height: auto;
+			animation-name: rotate;
+			animation-duration: 1s;
+			animation-fill-mode: forwards;
+		}
+
+		#impact{
+			position: absolute;
+			color: white;
+			font-size: 70px;
+			font-family: Georgia, 'Times New Roman', Times, serif;
+			z-index: 2;
+			margin-top: 500px;
+			margin-left: 50px;
+
+		}
+
+		#calc{
+			position: absolute;
+			color: white;
+			font-size: 23px;
+			font-family: Georgia, 'Times New Roman', Times, serif;
+			z-index: 2;
+			margin-top: 850px;
+			margin-left: 50px;
+			opacity: 0.9;
+
+
+		
+		}
+
+		.button{
+			background-color: rgb(43, 94, 153);
+			font-size: 22px;
+			position: absolute;
+			color: white;
+			margin-top: 1000px;
+			border-radius:10px; 
+			margin-left: 50px;
+			padding: 10px 30px;
+			border: none;
+			cursor: pointer;
+		}
+
+		.button:hover {
+      background-color:#002ead;
+      transition: 0.2s;
+	  padding: 12px 32px;
+  }
+
+		
+
+		@keyframes rotate {
+			from {
+				transform: rotate(0deg);
+			}
+			to {
+				transform: rotate(30deg);
+			}
+		}
+		 
+		/* Media Queries */
+		@media only screen and (max-width: 600px) {
+			#CarbonCalculator {
+				font-size: 30px;
+				top: 5px;
+				left: 5px;
+			}
+			#earth-image {
+				right: auto;
+				top: 120px;
+				left: 50%;
+				transform: translateX(-50%);
+				max-width: 90%;
+			}
+		}
+
+		nav ul {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+			display: flex;
+			margin-right: 80px;
+			font-size: 20px;
+		}
+
+		
+
+		nav li {
+			margin-left: 60px;
+			font-family: Georgia, 'Times New Roman', Times, serif;
+		}
+
+
+		nav a {
+			color: white;
+			text-decoration: none;
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<img id="logo-image" src="https://i.imgur.com/XhFygwN.png">
+		<div id="CarbonCalculator">CarbonCalculator</div>
+		<div id="impact"><b>Find your impact.<br>Go Carbon Neutral.</b></div>
+		<div id="calc">We calculate your carbon footprint and help you track and reduce it.<br>Awesome! Isn't it?</div>
+		<button class="button" onclick="window.location.href='newcalF - Main.html'"><b>CALCULATE</b></button>
+		
+		
+		<nav>
+			<ul>
+				<li><a href="HowItWorks.html">How it works</a></li>
+				<li><a href="newcalF - Main.html">Track</a></li>
+				<li><a href="help.html">Help</a></li>
+				<li><a href="faq.html">FAQ</a></li>
+			</ul>
+		</nav>
+	</header>
+	<img id="earth-image" src="https://i.imgur.com/4hZi03B.png">
+
+	<script>
+		// When the page is fully loaded, set the opacity of the body to 1
+		window.onload = function() {
+			document.body.style.opacity = "1";
+		}
+	</script>
+</body>
+</html>

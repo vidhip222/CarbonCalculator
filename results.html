@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Results</title>
+  <link rel="icon" type="image/x-icon" href="https://i.imgur.com/UKNP784.png" sizes="32x32">
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: Arial, sans-serif;
+      position: relative;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+      padding: 50px;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .container.loaded {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    h1 {
+      font-size: 30px;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .green {
+      color: green;
+    }
+
+    .yellow {
+      color: yellow;
+    }
+
+    .red {
+      color: red;
+    }
+
+    a {
+      color: white;
+      text-decoration: underline;
+    }
+
+    #CarbonCalculator-link {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      display: flex;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    #CarbonCalculator-text {
+      font-size: 40px;
+      color: white;
+      font-family: 'Times New Roman', serif;
+      margin-right: 10px;
+      margin-left: -550px;
+    }
+
+    #CarbonCalculator-logo {
+      width: 100px;
+      margin-left: -430px;
+    }
+
+    .note-container {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      margin-bottom: -130px;
+      text-align: left;
+      margin-left: -400px;
+    }
+
+    .note {
+      font-size: 23px;
+      margin-bottom: 10px;
+    }
+
+    .note .low {
+      color: green;
+    }
+
+    .note .medium {
+      color: yellow;
+    }
+
+    .note .high {
+      color: red;
+    }
+
+    .content {
+      margin-top: 238px;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .content.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #leaf {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      opacity: 1;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    #leaf.center {
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    #leaf.fade {
+      opacity: 0.3;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div id="CarbonCalculator-link">
+      <a href="CarbonCalculator.html"><span id="CarbonCalculator-text">CarbonCalculator</span></a>
+      <img src="https://i.imgur.com/XhFygwN.png" alt="CarbonCalculator Logo" id="CarbonCalculator-logo">
+    </div>
+
+    <p style="font-size: 40px;">Your carbon footprint is:</p>
+    <p class="result" style="font-size: 90px;"></p>
+    <p class="warning" style="font-size: 30px;"></p>
+
+    <div class="note-container">
+      <p class="note"><span class="low">1. A carbon footprint within the range of 6,000-15,999 pounds CO2e/year is considered low.</span></p>
+      <p class="note"><span class="medium">2. A carbon footprint within the range of 16,000-22,000 pounds CO2e/year is considered average/medium.</span></p>
+      <p class="note"><span class="high">3. A carbon footprint over the range of 22,000 pounds CO2e/year is considered high.</span></p>
+    </div>
+  </div>
+
+  <div class="content">
+    <h1 style="margin-left:580px; font-size: 40px; margin-bottom: 200px;">Go Green Practices</h1>
+    <p style="margin-top: -170px;">1. Limiting energy usage and emissions from transportation (walking, using bicycles or public transport, avoiding flying, using low-energy vehicles, carpooling), as well as from buildings, equipment, animals and processes.</p>
+    <p>2. Obtaining electricity and other forms of energy from zero or low carbon energy sources.</p>
+    <p>3. Wind power, nuclear power, hydropower, solar power, and geothermal are the energy sources with the lowest life-cycle emissions, which includes deployment and operations.</p>
+    <p>4. Reduce your food waste by planning meals ahead of time, freezing the excess and reusing leftovers.</p>
+    <p>5. Take care of your car. Keeping your tires properly inflated can increase your fuel efficiency by three percent; and ensuring that your car is properly maintained can increase it by four percent. Remove any extra weight from the car.</p>
+  </div>
+
+  <img src="https://i.imgur.com/RF4S5ZN.png" alt="Leaf" id="leaf">
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const totalCarbonFootprint = parseFloat(sessionStorage.getItem("totalCarbonFootprint"));
+
+      const resultElement = document.querySelector(".result");
+      const warningElement = document.querySelector(".warning");
+
+      if (!isNaN(totalCarbonFootprint)) {
+        resultElement.textContent = totalCarbonFootprint.toLocaleString() + " pounds CO2e/year";
+
+        if (totalCarbonFootprint < 15999) {
+          resultElement.classList.add("green");
+          warningElement.textContent = "";
+        } else if (totalCarbonFootprint < 22000) {
+          resultElement.classList.add("yellow");
+          warningElement.textContent = "";
+        } else {
+          resultElement.classList.add("red");
+          warningElement.textContent = "High";
+        }
+      } else {
+        resultElement.textContent = "Invalid input";
+      }
+
+      // Add the "loaded" class to the container after a short delay
+      setTimeout(function () {
+        const container = document.querySelector(".container");
+        container.classList.add("loaded");
+      }, 100);
+
+      // Handle scroll event
+      window.addEventListener("scroll", function () {
+        const leaf = document.getElementById("leaf");
+        const scrollY = window.scrollY;
+
+        if (scrollY > 0) {
+          leaf.classList.add("center");
+          leaf.classList.add("fade");
+        } else {
+          leaf.classList.remove("center");
+          leaf.classList.remove("fade");
+        }
+
+        const content = document.querySelector(".content");
+        const contentPosition = content.getBoundingClientRect().top;
+        const screenHeight = window.innerHeight;
+
+        if (contentPosition < screenHeight * 0.8) {
+          content.classList.add("visible");
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

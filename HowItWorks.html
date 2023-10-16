@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--Added Logo-->
+  <link rel="icon" type="image/png" href="https://i.imgur.com/UKNP784.png">
+  <!--Adding animate.style-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <!--added tailwind css-->
+  <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+  <!--Adding Fonts-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #000000;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      position: relative;
+      z-index: 1;
+      background-color: #000305;
+      color: white;
+    }
+
+    #logo-image {
+      width: 100px;
+      height: auto;
+      margin-right: 10px;
+      margin-left: 10px;
+      order: -1;
+      margin-top: -5px;
+    }
+
+    #CarbonCalculator {
+      font-size: 30px;
+      top: 5px;
+      left: 5px;
+    }
+
+    #earth-image {
+      position: absolute;
+      right: auto;
+      top: 290px;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: 90%;
+      opacity: 0.3;
+      margin-left: -250px;
+      width: 80%;
+      max-width: 500px;
+      align-items: center;
+      z-index: 2;
+      height: auto;
+      animation-name: rotate;
+      animation-duration: 1s;
+      animation-fill-mode: forwards;
+    }
+
+    @keyframes rotate {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(30deg);
+      }
+    }
+
+    /* Media Queries */
+    @media only screen and (max-width: 600px) {
+      #CarbonCalculator {
+        font-size: 20px;
+      }
+
+      #earth-image {
+        top: 150px;
+      }
+    }
+
+    /* How It Works Styles */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #FFFFFF;
+      font-size: 45px;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      color: #FFFFFF;
+      font-size: 30px;
+      margin-top: 20px;
+    }
+
+    p {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .step {
+      margin-bottom: 30px;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .step-animate {
+      opacity: 1;
+    }
+
+    .step-number {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #347FC4;
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+      line-height: 40px;
+      text-align: center;
+    }
+
+    .step-content {
+      display: inline-block;
+      vertical-align: top;
+      margin-left: 20px;
+    }
+  </style>
+  <title>How It Works</title>
+</head>
+<body>
+<header>
+  <img id="logo-image" src="https://i.imgur.com/XhFygwN.png">
+  <a href="index.html">
+    <div id="CarbonCalculator">CarbonCalculator</div>
+  </a>
+</header>
+<img id="earth-image" src="https://i.imgur.com/4hZi03B.png">
+<div class="container mx-auto p-10">
+  <h1 class="text-4xl font-bold">How It Works:</h1>
+  <div class="step" id="step1">
+    <div class="step-number">1</div>
+    <div class="step-content">
+      <h2 class="text-2xl font-bold">Step 1: Fill out the Form</h2>
+      <p class="text-lg" style="color:white; opacity:2;">Start by filling out the carbon footprint calculator form.
+        Provide information about your
+        daily activities and consumption patterns that contribute to your carbon footprint.</p>
+    </div>
+  </div>
+  <div class="step" id="step2">
+    <div class="step-number">2</div>
+    <div class="step-content">
+      <h2 class="text-2xl font-bold">Step 2: Calculate Your Carbon Footprint</h2>
+      <p class="text-lg" style="color:white; opacity:2;">Once you've provided all the necessary information, the
+        calculator will process the data and
+        calculate your carbon footprint. It takes into account various factors such as yearly mileage, electricity
+        bills,
+        and recycling of certain materials.</p>
+    </div>
+  </div>
+  <div class="step" id="step3">
+    <div class="step-number">3</div>
+    <div class="step-content">
+      <h2 class="text-2xl font-bold">Step 3: Get Insights and Suggestions</h2>
+      <p class="text-lg" style="color:white; opacity:2;">After calculating your carbon footprint, you'll receive
+        insights into your environmental
+        impact. The system will provide personalized suggestions and recommendations to reduce your carbon footprint
+        based on your results.</p>
+    </div>
+  </div>
+</div>
+<script>
+  // When the page is fully loaded, set the opacity of the body to 1
+  window.onload = function () {
+    document.body.style.opacity = "1";
+  };
+
+  // Get the step elements
+  const steps = Array.from(document.querySelectorAll('.step'));
+
+  // Add an event listener for scrolling
+  window.addEventListener('scroll', handleScroll);
+
+  function handleScroll() {
+    const windowHeight = window.innerHeight;
+
+    // Iterate through each step and check if it is in the viewport
+    steps.forEach(step => {
+      const rect = step.getBoundingClientRect();
+      const isVisible = (rect.top <= windowHeight * 0.8) && (rect.bottom >= windowHeight * 0.2);
+
+      if (isVisible) {
+        step.classList.add('step-animate');
+      } else {
+        step.classList.remove('step-animate');
+      }
+    });
+  }
+</script>
+</body>
+</html>

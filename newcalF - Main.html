@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculator</title>
+  <link rel="icon" type="image/x-icon" href="https://i.imgur.com/UKNP784.png" sizes="32x32">
+  <style>
+    /* New styles for the opening page transition */
+    body {
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      background-color: black; /* Set the background color to black */
+      color: white; /* Set the text color to white */
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    
+    
+    .trivia-container {
+      border-radius: 20px;
+      padding: 50px;
+      margin-bottom: 30px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      /* 3D effect with box shadow */
+      position: relative;
+      border: 2px solid rgb(52, 242, 62); /* Set the boundary color to red */
+    }
+
+    .trivia-container::after {
+      content: "";
+      position: absolute;
+      top: -5px;
+      left: -5px;
+      right: -5px;
+      bottom: -5px;
+      border-radius: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 255, 0.5);
+      /* Light blue outline */
+      pointer-events: none;
+      /* Allow clicks to pass through the pseudo-element */
+    }
+
+    h1 {
+      margin-top: 50px;
+      height: 30px;
+      font-size: 30px;
+      color: white; /* Set the text color to white */
+    }
+
+    h2 {
+      margin-top: 30px;
+      font-size: 30px;
+      color: white; /* Set the text color to white */
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      margin-top: 10px;
+      border: 1px solid white; /* Set the boundary color to white */
+      font-size: 22px;
+      border-radius: 15px;
+      padding: 20px;
+      width: 90%;
+      /* Set the desired width here */
+      margin-left: auto;
+      margin-right: auto;
+      cursor: pointer;
+      transition: background-color 0.3s ease-in-out;
+      /* Smooth transition with 0.3 seconds duration */
+    }
+
+    .selected {
+      background-color: rgb(20, 126, 20);
+      transition: background-color 0.3s ease-in-out;
+      /* Smooth transition with 0.3 seconds duration */
+    }
+
+    .loading-container {
+      margin-top: 30px;
+      display: none;
+    }
+
+    .loading-text {
+      font-size: 30px;
+      line-height: 24px;
+      margin-bottom: 10px;
+    }
+
+    .loading-circle {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 4px solid #ccc;
+      border-top-color: #333;
+      border-radius: 50%;
+      animation: spin 1s infinite linear;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    #CarbonCalculator-text {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-size: 40px;
+      color: white;
+      font-family: 'Times New Roman', serif;
+      z-index: 9999;
+      margin-left: 75px;
+      margin-top: 10px;
+    }
+
+
+    #CarbonCalculator-logo {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: 100px;
+      z-index: 9999;
+      margin-top: -17px;
+      margin-left: -15px;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <a href="index.html" id="CarbonCalculator-link"><div id="CarbonCalculator-text">CarbonCalculator</div></a>
+    <img src="https://i.imgur.com/XhFygwN.png" alt="CarbonCalculator Logo" id="CarbonCalculator-logo">
+    <h1>Carbon Footprint Calculator</h1>
+    <div class="trivia-container hidden">
+      <div id="question-container">
+        <h2 id="question"></h2>
+        <ul id="options">
+          <!-- Options will be added dynamically -->
+        </ul>
+      </div>
+      <div class="loading-container" id="loading-container">
+        <p class="loading-text">Calculating your Carbon Footprint</p>
+        
+            <div class="loading-circle"></div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const triviaData = [
+      {
+        question: "Please select the number of flights you've taken in the past year, 4 hours or more.",
+        options: ["0", "1-2", "2-5", "6-10", "10+"],
+        values: [0, 7000, 9400, 12320, 19400]
+      },
+      {
+        question: "Please select your monthly electricity bill in USD",
+        options: ["$0", "$1-200", "$200-400", "$400-800", "$800+"],
+        values: [0, 7000, 8200, 16000, 13500]
+      },
+      {
+        question: "Please select your total yearly mileage on your car in miles",
+        options: ["0", "1-800", "800-2400", "2400-4000", "4000+"],
+        values: [0, 316, 1000, 2844, 2860]
+      },
+      {
+        question: "Do you recycle newspapers?",
+        options: ["Yes", "No"],
+        values: [0, 184]
+      },
+      {
+        question: "Do you recycle aluminium and tin cans?",
+        options: ["Yes", "No"],
+        values: [0, 166]
+      },
+      // Add more questions and options as needed
+    ];
+
+    let currentQuestionIndex = 0;
+    const questionElement = document.getElementById("question");
+    const optionsElement = document.getElementById("options");
+    const questionContainer = document.getElementById("question-container");
+    const loadingContainer = document.getElementById("loading-container");
+    let totalCarbonFootprint = 0;
+
+    function displayQuestion() {
+      const currentQuestion = triviaData[currentQuestionIndex];
+      questionElement.textContent = currentQuestion.question;
+
+      optionsElement.innerHTML = "";
+      currentQuestion.options.forEach((option, index) => {
+        const li = document.createElement("li");
+        li.textContent = option;
+        li.addEventListener("click", () => handleOptionClick(index));
+        optionsElement.appendChild(li);
+      });
+    }
+
+    function handleOptionClick(optionIndex) {
+      const selectedOption = triviaData[currentQuestionIndex].values[optionIndex];
+      totalCarbonFootprint += selectedOption;
+      const selectedOptions = optionsElement.querySelectorAll("li");
+      selectedOptions.forEach(option => {
+        option.classList.remove("selected");
+      });
+      event.target.classList.add("selected");
+
+      setTimeout(() => {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < triviaData.length) {
+      displayQuestion();
+    } else {
+      setTimeout(() => {
+        showLoadingMessage();
+      }, 500); // Delay of 2 seconds before showing the loading message
+    }
+  }, 1000); // 1-second delay before displaying the next question or loading message
+}
+
+    function showLoadingMessage() {
+      questionContainer.style.display = "none"; // Hide the question container
+      const totalElement = document.createElement("p");
+      totalElement.textContent = "";
+      sessionStorage.setItem("totalCarbonFootprint", totalCarbonFootprint);
+      window.location.href = "results.html";
+
+
+      const titleElement = document.querySelector("h1");
+  titleElement.textContent = "";
+
+      // change color and warning as per requirement
+      let color = "";
+      let warning = "";
+      if (totalCarbonFootprint < 15999) {
+        color = "green";
+        warning = "";
+        totalElement.textContent += "";
+      } else if (totalCarbonFootprint < 22000) {
+        color = "yellow";
+        warning = "";
+        const linkElement = document.createElement("a");
+        linkElement.href = "../html/alternatives.html";
+        linkElement.textContent = "";
+        loadingContainer.appendChild(linkElement);
+      } else {
+        color = "red";
+        warning = "High";
+        const linkElement = document.createElement("a");
+        linkElement.href = "../html/alternatives.html";
+        linkElement.textContent = "";
+        loadingContainer.appendChild(linkElement);
+      }
+
+      totalElement.style.color = color;
+      loadingContainer.appendChild(totalElement);
+
+      const warningElement = document.createElement("p");
+      warningElement.textContent = warning;
+      warningElement.style.color = color;
+      loadingContainer.appendChild(warningElement);
+
+      loadingContainer.style.display = "block";
+    }
+
+    
+    
+
+    // Show the page after it has finished loading
+    window.addEventListener("load", () => {
+      document.body.style.opacity = "1";
+      setTimeout(() => {
+        document.querySelector(".trivia-container").classList.remove("hidden");
+      }, 1000); // Delay the appearance of the trivia container by 1 second
+    });
+
+    // Initial display of the first question
+    displayQuestion();
+
+  </script>
+</body>
+
+</html>
